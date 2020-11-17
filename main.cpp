@@ -1,3 +1,4 @@
+#include <chrono>
 #include <iostream>
 #include <random>
 
@@ -9,6 +10,8 @@ int main() {
   uniform_real_distribution<float> dist{0, 1};
   auto random = [&]() { return dist(rng); };
 
+  const auto start = chrono::high_resolution_clock::now();
+
   int n = 100;
   int c = 0;
 
@@ -19,9 +22,13 @@ int main() {
     if (r2 < 1) ++c;
   }
 
+  const auto end = chrono::high_resolution_clock::now();
+
+  const auto time = chrono::duration<float>(end - start).count();
+
   auto monte_carlo_pi = 4 * float(c) / float(n);
   cout << "pi=" << monte_carlo_pi << '\n';
-
+  cout << "time =" << time << "s\n";
   // cout << dist(rng) << '\n';
   // cout << random() << '\n';
 }
